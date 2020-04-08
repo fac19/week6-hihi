@@ -12,13 +12,13 @@ function router(request, response) {
     handlers.addPageHandler(request, response);
   } else if (url === "/create-tool" && method == "POST") {
     handlers.addToolHandler(request, response);
-  } else if ( url == "./newUserPage"  && method == "GET") {
+  } else if ( url == "/newUserPage"  && method == "GET") {
     handlers.newUserPage(request, response)
-  } else if (url == "./newUserPage" && method == "POST" ) {
+  } else if (url == "/newUserPage" && method == "POST" ) {
     handlers.addUser(request, response)
-  } else if ( url == "loginPage" && method == "GET") {
+  } else if ( url == "/loginPage" && method == "GET") {
     handlers.loginPage(request, response)
-  } else if ( url == "loginPage" && method == "POST" ) {
+  } else if ( url == "/loginPage" && method == "POST" ) {
     handlers.login(request, response)
   } else {
     handlers.missingHandler(request, response);

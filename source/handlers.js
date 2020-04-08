@@ -81,14 +81,28 @@ function addToolHandler(request, response) {
     })
 }
 
-// function loveHandler(request, response) {
-//   //UPDATE love of card in table
-// }
-
 function missingHandler(request, response) {
     response.writeHead(404, { "content-type": "text/html" });
     const missingHtml = templates.missing();
     response.end(missingHtml);
+}
+
+function newUserPage(request, response) {
+  response.writeHead(200, {'content-type': 'text/html'})
+  response.end(templates.signup())
+}
+
+function addUser(request, response) {
+
+}
+
+function loginPage(request, response) {
+  response.writeHead(200, { 'content-type': 'text/html' })
+  response.end(templates.login())
+}
+
+function login(request, response) {
+  
 }
 
 module.exports = {
@@ -97,5 +111,9 @@ module.exports = {
   addPageHandler,
   addToolHandler,
 //   loveHandler,
-  missingHandler
+  missingHandler,
+  newUserPage,
+  addUser,
+  loginPage,
+  login
 };
