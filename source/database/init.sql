@@ -3,8 +3,15 @@ BEGIN;
 -- Comment when in deployed
 DROP TABLE IF EXISTS user_input;
 
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  username VARCHAR(255),
+  passw VARCHAR(255)
+)
+
 CREATE TABLE user_input (
-  id SERIAL PRIMARY KEY,        -- unique identification
+  id SERIAL PRIMARY KEY, 
+  author_id INTEGER REFERENCES users(id),       -- unique identification
   category TEXT NOT NULL,       -- WORK, ENTERTAINMENT, SOCIAL, HEALTH, NEWS
   tool_name VARCHAR(50),        -- name of thing
   tool_description VARCHAR(280),-- what it is
@@ -12,6 +19,13 @@ CREATE TABLE user_input (
   added_by VARCHAR(50),         -- username
   love INTEGER                  -- how much people love it
 );
+
+INSERT INTO users (username, passw) VALUES 
+('Ivo', 'Has a very bad password'),
+('Ina', 'doesnt either'),
+('Hannah', 'however, has an excellent password'),
+('Hettie', 'is a mystery')
+
 
 INSERT INTO user_input (category, tool_name, tool_description, tool_link, added_by, love) VALUES
 ('Entertainment', 'Netflix', 'Stream shows and movies', 'netflix.com', 'ilovenetflix', 3),
