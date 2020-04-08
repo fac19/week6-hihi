@@ -6,7 +6,7 @@ const initPath = path.join(__dirname, "init.sql");
 const initSQL = fs.readFileSync(initPath, "utf-8");
 
 function build (){
-  return db.query(initSQL);
+    return db.query(initSQL);
 }
 
 module.exports = build;
