@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/public/styles.css">
+    <title>Sharing is caring</title>
+</head>
+<body>
+    
+    <header class="header">
+        <h1>Sharing is caring</h1>
+    </header>
+    
+    <section class="form">
+        <h3>Please add here what you have to share. Please keep one item per post</h3>
+        <form class="form__post" id="form" action="/listings.html" method="POST">
+            <fieldset class="fieldset__address">
+                <legend>Insert your details below kind sharer :)</legend>
+                <label class="form__label" for="title">Title</label>
+                <input class="form__input" type="text" id="title" name="title" required>
+                
+                <label class="form__label" for="user-name">Name</label>
+                <input class="form__input" type="text" id="user-name" name="user-name" required>
+                
+                <label class="form__label" for="user-postcode">Postcode</label>
+                <input class="form__input" type="text" id="user-postcode" name="user-postcode" required>
+                
+                <label class="form__label" for="textBox">What are you going to share?</label>
+                <textarea class="form__textbox" form="form" id="textBox" name="textBox" required></textarea>
+            </fieldset>            
+
+            <fieldset>
+                <legend>What kind of item are you sharing?</legend>
+                <input type="radio" value="food" id="food" name="category__radios" >
+                <label for="food">Food</label>
+                <input type="radio" value="toiletries" id="toiletries" name="category__radios" >
+                <label for="toiletries">Toiletries</label>
+                <input type="radio" value="household" id="household" name="category__radios" >
+                <label for="household">Household</label>
+                <input type="radio" value="other" id="other" name="category__radios">
+                <label for="other">Other</label>
+            </fieldset>
+            <button class="form__button" aria-label="button to submit post" type=submit">Submit</button>
+            <!-- <a href=""></a> -->
+        </form>
+    </section>
+</body>
+</html>

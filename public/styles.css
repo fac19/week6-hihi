@@ -1,0 +1,146 @@
+:root {
+    --baseColor: hsl(35, 61%, 94%);
+    --accentColor: hsl(24, 99%, 48%);
+    --secondaryColor: hsl(139, 57%, 37%);
+    --secondaryHover: hsl(139, 60%, 26%);
+}
+
+body {
+    margin: 0 auto;
+    background: var(--baseColor);
+    font-family: "Karla", sans-serif;
+    padding: 1rem;
+    max-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    font-weight: bolder;
+    text-align: center;
+    font-size: 2.7rem;
+    color: var(--accentColor);
+    margin: 0;
+}
+
+.header p {
+    text-align: center;
+    font-style: italic;
+}
+.img-neighbours {
+    width: 100%;
+    object-fit: contain;
+    display: inline-block;   
+}
+
+.btn-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn-wrapper a, .form__button {
+    /* background-color: hsl(210, 99%, 36%); */
+    background-color: var(--secondaryColor);
+    padding: 1rem;
+    margin-top: 0.5rem;
+    text-decoration: none;
+    color: var(--baseColor);
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    text-align: center;
+    min-width: 50%;
+}
+
+.btn-wrapper a:hover, .form__button:hover {
+    background-color: var(--secondaryHover);
+}
+main {
+    flex-grow: 2;
+}
+
+
+
+/* ------ form starts here ------ */
+
+.form {
+    
+}
+
+.fieldset__address {
+    display: flex;
+    justify-content: center;
+}
+
+.fieldset__address > input, textarea {
+    width: 100%;
+}
+
+.fieldset__address > legend {
+    margin-bottom: 1rem;
+}
+
+.form__post {
+    display: flex;
+    flex-direction: column;
+}
+
+
+fieldset {
+    border: none;
+    margin: 3% 0;
+    padding-bottom: 0;
+    font-size: 1.2rem;
+}
+
+label {
+    margin-bottom: 0.3rem;
+}
+input {
+    border: none;
+    margin-bottom: 1.5rem;
+}
+
+input[type="text"] {
+    min-height: 2rem;
+    font-size: 1.3rem;
+}
+
+textarea {
+    border: none;
+    min-height: 10rem;
+    font-size: 1.3rem;
+}
+
+
+/* ----- listing starts here ----- */
+
+.form__search {
+    margin: 10% 0;
+}
+
+.form__search button {
+    border: none;
+    font-size: 1.5rem;
+    background-color: var(--baseColor);
+}
+
+.tags {
+    font-size: 1.3rem;
+}
+
+@media screen and (min-width: 768px) {
+    body {
+        padding: 5% 0;
+    }
+    
+    .header p {
+        display: inline-block;
+        margin: 2% 15%;
+    }
+    .form__search {
+        margin: 3% 0;
+    }
+}

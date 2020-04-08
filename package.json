@@ -1,0 +1,37 @@
+{
+  "name": "week6-hihi",
+  "version": "1.0.0",
+  "engines": {
+    "node": "12.16.x"
+  },
+  "description": "week 6 project",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "PGDATABASE=hihi_test_db tape src/tests/* | tap-spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fac19/week6-hihi.git"
+  },
+  "author": "Hannah Gooding, Ina Yoon, Hettie McConnell, Ivo Evans",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fac19/week6-hihi/issues"
+  },
+  "homepage": "https://github.com/fac19/week6-hihi#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.2",
+    "supertest": "^4.0.2",
+    "tap-spec": "^5.0.0",
+    "tape": "^4.13.2"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie": "^0.4.0",
+    "dotenv": "^8.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^8.0.0"
+  }
+}
