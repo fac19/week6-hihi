@@ -35,8 +35,16 @@ function addLove(id) {
     `);
 }
 
-function createNewUser() {}
+function createNewUser(data) {
+  const values = [data.username, data.password];
+  return db.query(
+    `INSERT INTO users(username, password) VALUES($1, $2)`,
+    values
+  );
+}
 
-function getUsers() {}
+function getUsers() {
+  return db.query(`SELECT * FROM users`).then((result) => result.rows);
+}
 
 module.exports = { getTools, createTool, addLove, createNewUser, getUsers };

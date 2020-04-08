@@ -164,7 +164,7 @@ test("Can create a new user with form", (t) => {
     };
     createNewUser(data)
       .then(() =>
-        getUsers().then((user) => {
+        getUsers().then((users) => {
           const latestUser = users[users.length - 1];
           t.equal(latestUser.username, "IvoLovesPancakes"), t.end();
         })
