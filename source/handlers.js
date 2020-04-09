@@ -3,6 +3,8 @@ const path = require("path");
 const model = require("./model");
 const templates = require("./template");
 const bcryptjs = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const secret = "jhjg7o8injgv";
 const types = {
   html: "text/html",
   css: "text/css",
@@ -129,7 +131,22 @@ function loginPage(request, response) {
   response.end(templates.login());
 }
 
-function login(request, response) {}
+function login(request, response) {
+  let body = "";
+  console.log(body);
+  request.on("data", (chunk) => (body += chunk));
+  request.on("end", () => {
+    const searchParams = new URLSearchParams(body);
+    const userInformation = Object.fromEntries(searchParams);
+    console.log(userInformation);
+    const newCookie = jwt.sign(userInformation, secret);
+    response.writeHead(302, {
+      Location: "/",
+      "Set-Cookie": `login=${newCookie}; HttpOnly`,
+    });
+    return response.end();
+  });
+}
 
 function deletePost(request, response, url) {
   // SIMPLE VERSION

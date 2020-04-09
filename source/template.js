@@ -6,7 +6,7 @@ function htmlSkeleton(redirect, content, username) {
   if (!username) {
     navBar = `
     <p><a href="/newUserPage">Sign up</a></p>
-    <p><a href="/login">Login</a></p>
+    <p><a href="/loginPage">Login</a></p>
     `;
   } else {
     navBar = `
@@ -129,7 +129,7 @@ function addPage() {
 function login() {
   return htmlSkeleton(
     `<a class="new-page-link" href='/'>Go back home</a>``
-        <form method="post" action="./log-in" enctype="application/x-www-form-urlencoded">
+        <form method="post" action="./loginPage" enctype="application/x-www-form-urlencoded">
         <label for="username">Username</label>
         <input id="username" type="text" name="username">
         <label for="password">Password</label>
