@@ -199,6 +199,7 @@ test("Can check password from login form matches password in database", (t) => {
     t.end();
   })
 });
+
 test("Can only create unique username", (t) => {
   build().then(() => {
     const data = {

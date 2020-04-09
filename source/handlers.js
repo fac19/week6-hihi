@@ -129,7 +129,6 @@ function loginPage(request, response) {
   response.end(templates.login());
 }
 
-<<<<<<< HEAD
 function loginHandler(request, response) {
   // re-route user to homepage
 }
@@ -137,8 +136,8 @@ function loginHandler(request, response) {
 function loginFailed(request, response) {
   response.writeHead(401, { 'content-type': 'text/html' })
   response.end('<h1>Incorrect password!</h1>')
-=======
-function login(request, response) {}
+}
+
 
 function deletePost(request, response, url) {
   // SIMPLE VERSION
@@ -154,8 +153,7 @@ function deletePost(request, response, url) {
   // COMPLICATION
   // the user should only be able to delete their own posts
   // after working out what post to delete, we should check the jwt to see if the author_id of the post matches the author_id in the verified jwt.
->>>>>>> master
-}
+
 
 module.exports = {
   homeHandler,
@@ -167,11 +165,7 @@ module.exports = {
   newUserPage,
   addUser,
   loginPage,
-<<<<<<< HEAD
   loginHandler,
   loginFailed
-=======
-  login,
   deletePost,
->>>>>>> master
 };
