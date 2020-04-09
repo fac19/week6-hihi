@@ -58,6 +58,10 @@ function getUsers() {
   return db.query(`SELECT * FROM users`).then((result) => result.rows);
 }
 
+function deletePostFromDatabase(deleteId) {
+  return db.query(`DELETE FROM user_input WHERE id = $1`, [+deleteId]);
+}
+
 module.exports = {
   getTools,
   createTool,
@@ -65,4 +69,5 @@ module.exports = {
   checkOriginalUsername,
   createNewUser,
   getUsers,
+  deletePostFromDatabase,
 };
