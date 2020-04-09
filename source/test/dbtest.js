@@ -7,6 +7,8 @@ const {
   addLove,
   createNewUser,
   getUsers,
+  // checkPassword, 
+  // createJWT 
 } = require("../model");
 
 // test getTools()
@@ -175,3 +177,23 @@ test("Can create a new user with form", (t) => {
       });
   });
 });
+
+// test("Can check password from login form matches password in database", (t) => {
+//   build().then(() => {
+//     const loginInput = {
+//       username: "HettieMcC",
+//       password: "hello123",
+//     };
+//     checkPassword(loginInput.password)
+//     .then(() => {
+//       getUsers().then(() => {
+//         t.equal(true);
+//         t.end();
+//       })
+//     })
+//     .catch((error) => {
+//       t.error(error);
+//       t.end();
+//     })
+//   })
+// })

@@ -47,4 +47,12 @@ function getUsers() {
   return db.query(`SELECT * FROM users`).then((result) => result.rows);
 }
 
-module.exports = { getTools, createTool, addLove, createNewUser, getUsers };
+function checkPassword() {
+  // return db.query(`SELECT username FROM users`).then((result) => result.)
+};
+
+function createJWT() {
+
+};
+
+module.exports = { getTools, createTool, addLove, createNewUser, getUsers, checkPassword, createJWT };
