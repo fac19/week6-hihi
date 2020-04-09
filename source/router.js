@@ -20,7 +20,7 @@ function router(request, response) {
   } else if (url == "/loginPage" && method == "GET") {
     handlers.loginPage(request, response);
   } else if (url == "/loginpage" && method == "POST") {
-    handlers.login(request, response);
+    handlers.loginHandler(request, response);
   } else if (url == "/logout") {
     handlers.logout(request, response);
   } else if (url.includes("delete")) {

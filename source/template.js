@@ -135,7 +135,7 @@ function login() {
         <label for="username">Username</label>
         <input id="username" type="text" name="username">
         <label for="password">Password</label>
-        <input id="password" type="password" name="password">  
+        <input id="password" type="password" name="password">
         <input type="submit" value="Log in">
         </form>
         `
@@ -155,22 +155,21 @@ function signup() {
           <input type="submit" value="Create account">
           </form>
           `
-  );
-}
-
+          )
+        }
+          
 function login() {
   return htmlSkeleton(
     `<a class="new-page-link" href='/'>Go back home</a>`,
-
     `
-            <form method="post" action="./loginpage" enctype="application/x-www-form-urlencoded">
-            <label for="username">Username</label>
-            <input id="username" type="text" name="username">
-            <label for="password">Password</label>
-            <input id="password" type="password" name="password">  
-            <input type="submit" value="Log in">
-            </form>
-            `
+    <form method="post" action="./loginpage" enctype="application/x-www-form-urlencoded">
+    <label for="username">Username</label>
+    <input id="username" type="text" name="username">
+    <label for="password">Password</label>
+    <input id="password" type="password" name="password">  
+    <input type="submit" value="Log in">
+    </form>
+    `
   );
 }
 

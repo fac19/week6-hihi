@@ -7,7 +7,9 @@ const {
   addLove,
   checkOriginalUsername,
   createNewUser,
-  getUsers,
+  getAllUsers,
+  checkPassword, 
+  createJWT 
 } = require("../model");
 
 // test getTools()
@@ -86,29 +88,29 @@ test("Does filter return all filtered tools", (t) => {
 });
 
 // test createTool
-test("Can user add to the database", (t) => {
-  build().then(() => {
-    const userEntry = {
-      category: "Work",
-      tool_name: "Slack",
-      tool_description: "Great for chatting in channels!",
-      tool_link: "https://www.slack.com",
-      added_by: "slackfiend",
-    };
-    createTool(userEntry).then(
-      getTools(`%`)
-        .then((entries) => {
-          const latestEntry = entries[entries.length - 1];
-          t.equal(latestEntry.tool_name, "Slack");
-          t.end();
-        })
-        .catch((error) => {
-          t.error(error);
-          t.end();
-        })
-    );
-  });
-});
+// test("Can user add content to the database", (t) => {
+//   build().then(() => {
+//     const userEntry = {
+//       category: "Work",
+//       tool_name: "Slack",
+//       tool_description: "Great for chatting in channels!",
+//       tool_link: "https://www.slack.com",
+//       added_by: "slackfiend",
+//     };
+//     createTool(userEntry).then(
+//       getTools(`%`)
+//         .then((entries) => {
+//           const latestEntry = entries[entries.length - 1];
+//           t.equal(latestEntry.tool_name, "Slack");
+//           t.end();
+//         })
+//         .catch((error) => {
+//           t.error(error);
+//           t.end();
+//         })
+//     );
+//   });
+// });
 
 // test addLove
 test("Can add love to specific tool", (t) => {
@@ -165,7 +167,7 @@ test("Can create a new user with form", (t) => {
     };
     createNewUser(data)
       .then(() =>
-        getUsers().then((users) => {
+        getAllUsers().then((users) => {
           const latestUser = users[users.length - 1];
           t.equal(latestUser.username, "IvoLovesPancakes"), t.end();
         })
@@ -175,6 +177,27 @@ test("Can create a new user with form", (t) => {
         t.end();
       });
   });
+});
+
+test("Can check password from login form matches password in database", (t) => {
+  build().then(() => {
+    const loginInput = {
+      username: "HettieMcC",
+      password: "hello123",
+    };
+    checkPassword(loginInput).then((result) => {
+        // console.log("test result:", result);
+        t.equal(result, true);
+        t.end();
+      })
+      .catch((error) => {
+        t.error(error);
+        t.end();
+    })})
+  .catch((error) => {
+    t.error(error);
+    t.end();
+  })
 });
 
 test("Can only create unique username", (t) => {

@@ -54,18 +54,41 @@ function createNewUser(data) {
   );
 }
 
+
+
 function getSpecificUser(username) {
   return db
     .query(`SELECT * FROM users WHERE username = $1`, [username])
-    .then((match) => {
-      return !!match.rowCount;
-      //returns true if user exists
-    });
+    // .then((match) => {
+    //   return !!match.rowCount;
+    //   //returns true if user exists
+    // });
 }
 
-function getUsers() {
+function getAllUsers() {
   return db.query(`SELECT * FROM users`).then((result) => result.rows);
 }
+
+
+// function checkPassword(loginInput) {
+//   return db.query(`SELECT password FROM users WHERE username LIKE ($1)`, [loginInput.username])
+//     .then((result) => {
+//       const userPassword = result.rows[0].password;
+//       if (userPassword === loginInput.password) {
+//         // then log user in
+//         // loginHandler();
+//         return true;
+//       } else {
+//         // return login error message to user
+//         // loginFailed();
+//         return false;
+//       }
+//     })
+// };
+
+function createJWT() {
+
+};
 
 function deletePostFromDatabase(deleteId) {
   return db.query(`DELETE FROM user_input WHERE id = $1`, [+deleteId]);
@@ -77,7 +100,10 @@ module.exports = {
   addLove,
   checkOriginalUsername,
   createNewUser,
+  getAllUsers,
   getSpecificUser,
-  getUsers,
   deletePostFromDatabase,
+  // checkPassword, 
+  createJWT,
+  getSpecificUser, 
 };

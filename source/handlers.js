@@ -67,9 +67,9 @@ function addToolHandler(request, response) {
   request.on("end", () => {
     const searchParams = new URLSearchParams(body);
     const data = Object.fromEntries(searchParams);
-    console.log(data);
+    // console.log(data);
     data.love = 0;
-    console.log(data);
+    // console.log(data);
     model
       .createTool(data)
       .then(() => {
@@ -126,34 +126,80 @@ function addUser(request, response) {
   });
 }
 
+
 function loginPage(request, response) {
   response.writeHead(200, { "content-type": "text/html" });
   response.end(templates.login());
 }
 
-function login(request, response) {
-  let body = "";
-  request.on("data", (chunk) => (body += chunk));
-  request.on("end", () => {
-    const searchParams = new URLSearchParams(body);
-    const userInformation = Object.fromEntries(searchParams);
-    const username = userInformation.username;
+function loginHandler(request, response) {
+  body = "";
+  request.on('data', (chunk) => {
+    body += chunk;
+  })
+
+
+  request.on('end', () => {
+    const incomingInfo = Object.fromEntries(new URLSearchParams(body))  
+    const username = incomingInfo.username;
+
     model.getSpecificUser(username).then((user) => {
-      if (user) {
-        //check password
-        const newCookie = jwt.sign(username, secret);
-        response.writeHead(302, {
-          Location: "/",
-          "Set-Cookie": `login=${newCookie}; HttpOnly`,
-        });
-        return response.end();
+      console.log(user.rows);      
+      if (user.rowCount) {
+        const hashedPassword = user.rows[0].password
+         if (bcryptjs.compareSync(incomingInfo.password, hashedPassword)) {
+          const newCookie = jwt.sign(username, secret);
+          response.writeHead(302, {
+            'Location': "/",
+            "Set-Cookie": `login=${newCookie}; HttpOnly`,
+          })
+          return response.end();
+       
+          // create cookie /jwt < Hettie and Ina
+         } else {
+          loginFailed(request, response);
+         }
       } else {
-        response.writeHead(500, { "content-type": "text/html" });
+        response.writeHead(401, { "content-type": "text/html" });
         response.end("<h1> User does not exist. </h1>");
       }
-    });
-  });
+    })
+  })
 }
+
+
+function loginFailed(request, response) {
+  response.writeHead(401, { 'content-type': 'text/html' })
+  response.end('<h1>Incorrect password!</h1>')
+}
+
+// function login(request, response) {
+//   let body = "";
+//   request.on("data", (chunk) => (body += chunk));
+
+
+//   request.on("end", () => {
+//     const searchParams = new URLSearchParams(body);
+//     const userInformation = Object.fromEntries(searchParams);
+
+//     const username = userInformation.username;
+//     model.getSpecificUser(username).then((user) => {
+//       if (user) {
+//         //check password
+
+//         const newCookie = jwt.sign(username, secret);
+//         response.writeHead(302, {
+//           Location: "/",
+//           "Set-Cookie": `login=${newCookie}; HttpOnly`,
+//         });
+//         return response.end();
+//       } else {
+//         response.writeHead(500, { "content-type": "text/html" });
+//         response.end("<h1> User does not exist. </h1>");
+//       }
+//     });
+//   });
+// }
 
 function logout(request, response) {
   response.writeHead(302, {
@@ -171,13 +217,14 @@ function deletePost(request, response, url) {
     response.writeHead(302, { location: "/" });
     response.end();
   });
+}
 
   // and then we can use that text to delete from the database
 
   // COMPLICATION
   // the user should only be able to delete their own posts
   // after working out what post to delete, we should check the jwt to see if the author_id of the post matches the author_id in the verified jwt.
-}
+
 
 module.exports = {
   homeHandler,
@@ -189,7 +236,8 @@ module.exports = {
   newUserPage,
   addUser,
   loginPage,
-  login,
+  loginHandler,
+  loginFailed,
   logout,
   deletePost,
 };
