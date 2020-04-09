@@ -48,11 +48,10 @@ function getAllUsers() {
 }
 
 function checkPassword(loginInput) {
-  // const values = [loginInput.username, loginInput.password]
   return db.query(`SELECT password FROM users WHERE username LIKE ($1)`, [loginInput.username])
     .then((result) => {
-      console.log("result.rows is" + result.rows);
-      const userPassword = result.rows.password;
+      console.log("result.rows[0]:", result.rows[0]);
+      const userPassword = result.rows[0].password;
       if (userPassword === loginInput.password) {
         // then log user in
         // loginHandler();
@@ -60,7 +59,6 @@ function checkPassword(loginInput) {
       } else {
         // return login error message to user
         // loginFailed();
-        console.log(loginInput.password, userPassword);
         return false;
       }
     })
