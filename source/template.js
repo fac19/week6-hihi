@@ -2,8 +2,20 @@ const model = require("./model");
 const handlers = require("./handlers");
 
 function htmlSkeleton(redirect, content) {
+  /*let navBar;
+  if (!username) {
+    navBar = `
+    <p><a href="/newUserPage">Sign up</a></p>
+    <p><a href="/login">Login</a></p>
+    `;
+  } else {
+    navBar = `
+    <p>You are loggged in as ${username}</p>
+    <p><a href="#">Log out</a></p>
+    `;
+  }*/
+
   return `
-  
   <!DOCTYPE html>
   <html lang="en">
   <head>
@@ -17,6 +29,9 @@ function htmlSkeleton(redirect, content) {
   <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;600;800&display=swap" rel="stylesheet">
   </head>
   <body>
+  <-- <nav class="navBar">
+    ${navBar}
+  </nav> -->
   <h1 class="heading-logo">SRV|VRS</h1>
   ${redirect}
   <main>
