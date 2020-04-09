@@ -55,7 +55,6 @@ function createNewUser(data) {
 }
 
 function getUsers() {
-  data.password;
   return db.query(`SELECT * FROM users`).then((result) => result.rows);
 }
 

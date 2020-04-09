@@ -5,6 +5,7 @@ const {
   getTools,
   createTool,
   addLove,
+  checkOriginalUsername,
   createNewUser,
   getUsers,
 } = require("../model");
@@ -180,7 +181,21 @@ test("Can only create unique username", (t) => {
   build().then(() => {
     const data = {
       username: "HettieMcC",
-      password: "copyaccount",
+      password: "copyAccount",
     };
+    const newUser = {
+      username: "Ivo",
+      password: "IvoIsTheBest",
+    };
+    checkOriginalUsername(newUser)
+      .then((result) => {
+        t.equal(result, true);
+      })
+      .then(() => {
+        checkOriginalUsername(data).then((result) => {
+          t.equal(result, false);
+          t.end();
+        });
+      });
   });
 });
