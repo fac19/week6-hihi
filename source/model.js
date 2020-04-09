@@ -35,6 +35,17 @@ function addLove(id) {
     `);
 }
 
+function checkOriginalUsername(data) {
+  const values = [data.username, data.password];
+
+  return db
+    .query("SELECT * FROM users WHERE username = $1", [data.username])
+    .then((match) => {
+      return !match.rowCount;
+      //returns false if username already exists
+    });
+}
+
 function createNewUser(data) {
   const values = [data.username, data.password];
   return db.query(
@@ -68,4 +79,18 @@ function createJWT() {
 
 };
 
-module.exports = { getTools, createTool, addLove, createNewUser, getAllUsers, checkPassword, createJWT };
+function deletePostFromDatabase(deleteId) {
+  return db.query(`DELETE FROM user_input WHERE id = $1`, [+deleteId]);
+}
+
+module.exports = {
+  getTools,
+  createTool,
+  addLove,
+  checkOriginalUsername,
+  createNewUser,
+  getAllUsers,
+  deletePostFromDatabase,
+  checkPassword, 
+  createJWT 
+};

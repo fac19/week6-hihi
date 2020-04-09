@@ -1,9 +1,21 @@
 const model = require("./model");
 const handlers = require("./handlers");
 
-function htmlSkeleton(redirect, content) {
+function htmlSkeleton(redirect, content, username) {
+  let navBar;
+  if (!username) {
+    navBar = `
+    <p><a href="/newUserPage">Sign up</a></p>
+    <p><a href="/login">Login</a></p>
+    `;
+  } else {
+    navBar = `
+    <p>You are loggged in as ${username}</p>
+    <p><a href="#">Log out</a></p>
+    `;
+  }
+
   return `
-  
   <!DOCTYPE html>
   <html lang="en">
   <head>
@@ -17,6 +29,9 @@ function htmlSkeleton(redirect, content) {
   <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;600;800&display=swap" rel="stylesheet">
   </head>
   <body>
+  <nav class="navBar">
+    ${navBar}
+  </nav>
   <h1 class="heading-logo">SRV|VRS</h1>
   ${redirect}
   <main>
@@ -29,8 +44,9 @@ function htmlSkeleton(redirect, content) {
 }
 
 function printTools(tools) {
-  return tools.map(tool => {
-    return `
+  return tools
+    .map((tool) => {
+      return `
     <article id="tool_${tool.id}" class="tool-card"> 
     <h2 class="tool-card__name">${tool.tool_name}</h2>
     <p class="tool-card__love-icon"><a><i class="fas fa-heart"></i></a><span>${tool.love}</span></p>
@@ -38,17 +54,19 @@ function printTools(tools) {
     <p class="tool-card__desc">What is it: ${tool.tool_description}</p>
     <a class="tool-card__link" href="https://www.${tool.tool_link}">Link</a>
     <p class="tool-card__category">Category: ${tool.category}</p>
+    <a href="delete=${tool.id}"><button class="delete-button">Delete</button></a>
     </article>
     `;
-  }).join("");
+    })
+    .join("");
 }
 
 function home(tools) {
   return htmlSkeleton(
-    // Redirect Parameter 
+    // Redirect Parameter
     `<h2 class="home-description">A collection of tools to help you survive social distancing!</h2>
     <a class="new-page-link" href='/add'>Add a tool</a>`,
-    // Content Parameter 
+    // Content Parameter
     `
     <p class="home-filter-description">Select a category to filter the results:</p>
     <div id="categoryIcon" class="cat">
@@ -58,15 +76,16 @@ function home(tools) {
     <a class="cat__health-icon"><i class="fas fa-heartbeat"></i></a>
     <a class="cat__news-icon"><i class="far fa-newspaper"></i></a>
     </div>
-    ${printTools(tools)}`);
-  }
-  
-  function addPage() {
-    return htmlSkeleton(
-      // Redirect Parameter 
-      `<a class="new-page-link" href='/'>Go back home</a>`,
-      // Content Parameter 
-      `<form action="create-tool" method="POST">
+    ${printTools(tools)}`
+  );
+}
+
+function addPage() {
+  return htmlSkeleton(
+    // Redirect Parameter
+    `<a class="new-page-link" href='/'>Go back home</a>`,
+    // Content Parameter
+    `<form action="create-tool" method="POST">
       <fieldset>
       <legend>Category:</legend>
       <label class="radio-label" for="work"><i class="fas fa-briefcase"></i>
@@ -104,14 +123,12 @@ function home(tools) {
       
       <button class="post-tool-button" type="submit">Post tool</button>
       </form>`
-      );
-    }
-    
-    function login() {
-      return htmlSkeleton(
-        `<a class="new-page-link" href='/'>Go back home</a>`
+  );
+}
 
-        `
+function login() {
+  return htmlSkeleton(
+    `<a class="new-page-link" href='/'>Go back home</a>``
         <form method="post" action="./log-in" enctype="application/x-www-form-urlencoded">
         <label for="username">Username</label>
         <input id="username" type="text" name="username">
@@ -120,14 +137,14 @@ function home(tools) {
         <input type="submit" value="Log in">
         </form>
         `
-        )
-      }
-      
-      function signup() {
-        return htmlSkeleton(
-          `<a class="new-page-link" href='/'>Go back home</a>`,
+  );
+}
 
-          `
+function signup() {
+  return htmlSkeleton(
+    `<a class="new-page-link" href='/'>Go back home</a>`,
+
+    `
           <form method="post" action="./newUserPage" enctype="application/x-www-form-urlencoded">
           <label for="username">Username</label>
           <input id="username" type="text" name="username">
@@ -138,16 +155,29 @@ function home(tools) {
           `
           )
         }
-  
-        
-        function missing() {
-          return htmlSkeleton(
-            // Redirect Parameter 
-            `<a href='/'><h2 class='error-subtitle'>Go back home!</h2></a>`,
-            // Content Parameter   
-            `<h1 class="error-title">Content Not Found</h1>`
-            );
-          }
           
-          module.exports = { home, addPage, missing, login, signup };
-          
+function login() {
+  return htmlSkeleton(
+    `<a class="new-page-link" href='/'>Go back home</a>`,
+    `
+    <form method="post" action="./loginpage" enctype="application/x-www-form-urlencoded">
+    <label for="username">Username</label>
+    <input id="username" type="text" name="username">
+    <label for="password">Password</label>
+    <input id="password" type="password" name="password">  
+    <input type="submit" value="Log in">
+    </form>
+    `
+  );
+}
+
+function missing() {
+  return htmlSkeleton(
+    // Redirect Parameter
+    `<a href='/'><h2 class='error-subtitle'>Go back home!</h2></a>`,
+    // Content Parameter
+    `<h1 class="error-title">Content Not Found</h1>`
+  );
+}
+
+module.exports = { home, addPage, missing, login, signup };

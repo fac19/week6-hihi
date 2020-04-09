@@ -5,6 +5,7 @@ const {
   getTools,
   createTool,
   addLove,
+  checkOriginalUsername,
   createNewUser,
   getAllUsers,
   checkPassword, 
@@ -197,4 +198,26 @@ test("Can check password from login form matches password in database", (t) => {
     t.error(error);
     t.end();
   })
+});
+test("Can only create unique username", (t) => {
+  build().then(() => {
+    const data = {
+      username: "HettieMcC",
+      password: "copyAccount",
+    };
+    const newUser = {
+      username: "Ivo",
+      password: "IvoIsTheBest",
+    };
+    checkOriginalUsername(newUser)
+      .then((result) => {
+        t.equal(result, true);
+      })
+      .then(() => {
+        checkOriginalUsername(data).then((result) => {
+          t.equal(result, false);
+          t.end();
+        });
+      });
+  });
 });
