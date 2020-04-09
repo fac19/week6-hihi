@@ -54,6 +54,15 @@ function createNewUser(data) {
   );
 }
 
+function getSpecificUser(username) {
+  return db
+    .query(`SELECT * FROM users WHERE username = $1`, [username])
+    .then((match) => {
+      return !!match.rowCount;
+      //returns true if user exists
+    });
+}
+
 function getUsers() {
   return db.query(`SELECT * FROM users`).then((result) => result.rows);
 }
@@ -68,6 +77,7 @@ module.exports = {
   addLove,
   checkOriginalUsername,
   createNewUser,
+  getSpecificUser,
   getUsers,
   deletePostFromDatabase,
 };
