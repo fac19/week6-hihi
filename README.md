@@ -4,6 +4,12 @@ Week 6 project
 ## Project description
 We have worked on the SRVVRS app from last week, adding authentication functionality.
 
+### Written by: 
+- [Hannah](https://github.com/hannahgooding)
+- [Ina](https://github.com/itsina96)
+- [Ivo](https://github.com/Ivo-Evans)
+- [Hattie](https://github.com/HettieM)
+
 ## Set up instructions
 1. Clone this repo
 2. Run `$ npm install` on your terminal
