@@ -3,6 +3,8 @@ const path = require("path");
 const model = require("./model");
 const templates = require("./template");
 const bcryptjs = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const secret = "jhjg7o8injgv";
 const types = {
   html: "text/html",
   css: "text/css",
@@ -135,29 +137,34 @@ function loginHandler(request, response) {
   request.on('data', (chunk) => {
     body += chunk;
   })
+
+
   request.on('end', () => {
     const incomingInfo = Object.fromEntries(new URLSearchParams(body))  
-    model.getSpecificUser().then((user) => {
+    const username = incomingInfo.username;
+
+    model.getSpecificUser(username).then((user) => {
       console.log(user.rows);      
       if (user.rowCount) {
         const hashedPassword = user.rows[0].password
-         if (bcryptjs.compare(hashedPassword, incomingInfo.password)) {
-          response.writeHead(302, {'content-type': 'text/html'})
-          response.end();
-  
+         if (bcryptjs.compareSync(incomingInfo.password, hashedPassword)) {
+          const newCookie = jwt.sign(username, secret);
+          response.writeHead(302, {
+            'Location': "/",
+            "Set-Cookie": `login=${newCookie}; HttpOnly`,
+          })
+          return response.end();
+       
           // create cookie /jwt < Hettie and Ina
          } else {
           loginFailed(request, response);
          }
       } else {
-        response.writeHead(401, { 'content-type': 'text/html' })
-        response.end('<h1>IBan!</h1>')
-        // send rejection - no user < Hettie and Ina
+        response.writeHead(401, { "content-type": "text/html" });
+        response.end("<h1> User does not exist. </h1>");
       }
     })
   })
-
-
 }
 
 
@@ -166,6 +173,41 @@ function loginFailed(request, response) {
   response.end('<h1>Incorrect password!</h1>')
 }
 
+// function login(request, response) {
+//   let body = "";
+//   request.on("data", (chunk) => (body += chunk));
+
+
+//   request.on("end", () => {
+//     const searchParams = new URLSearchParams(body);
+//     const userInformation = Object.fromEntries(searchParams);
+
+//     const username = userInformation.username;
+//     model.getSpecificUser(username).then((user) => {
+//       if (user) {
+//         //check password
+
+//         const newCookie = jwt.sign(username, secret);
+//         response.writeHead(302, {
+//           Location: "/",
+//           "Set-Cookie": `login=${newCookie}; HttpOnly`,
+//         });
+//         return response.end();
+//       } else {
+//         response.writeHead(500, { "content-type": "text/html" });
+//         response.end("<h1> User does not exist. </h1>");
+//       }
+//     });
+//   });
+// }
+
+function logout(request, response) {
+  response.writeHead(302, {
+    location: "/",
+    "set-cookie": `login=0; Max-Age=0`,
+  });
+  return response.end();
+}
 
 function deletePost(request, response, url) {
   // SIMPLE VERSION
@@ -196,5 +238,6 @@ module.exports = {
   loginPage,
   loginHandler,
   loginFailed,
+  logout,
   deletePost,
 };

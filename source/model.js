@@ -54,13 +54,21 @@ function createNewUser(data) {
   );
 }
 
+
+
+function getSpecificUser(username) {
+  return db
+    .query(`SELECT * FROM users WHERE username = $1`, [username])
+    // .then((match) => {
+    //   return !!match.rowCount;
+    //   //returns true if user exists
+    // });
+}
+
 function getAllUsers() {
   return db.query(`SELECT * FROM users`).then((result) => result.rows);
 }
 
-function getSpecificUser(username) {
-  return db.query(`SELECT * FROM users WHERE username = $1`, [username])  
-}
 
 // function checkPassword(loginInput) {
 //   return db.query(`SELECT password FROM users WHERE username LIKE ($1)`, [loginInput.username])
@@ -93,6 +101,7 @@ module.exports = {
   checkOriginalUsername,
   createNewUser,
   getAllUsers,
+  getSpecificUser,
   deletePostFromDatabase,
   // checkPassword, 
   createJWT,
