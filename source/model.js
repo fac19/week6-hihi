@@ -35,6 +35,17 @@ function addLove(id) {
     `);
 }
 
+function checkOriginalUsername(data) {
+  const values = [data.username, data.password];
+
+  return db
+    .query("SELECT * FROM users WHERE username = $1", [data.username])
+    .then((match) => {
+      return !match.rowCount;
+      //returns false if username already exists
+    });
+}
+
 function createNewUser(data) {
   const values = [data.username, data.password];
   return db.query(
@@ -47,4 +58,11 @@ function getUsers() {
   return db.query(`SELECT * FROM users`).then((result) => result.rows);
 }
 
-module.exports = { getTools, createTool, addLove, createNewUser, getUsers };
+module.exports = {
+  getTools,
+  createTool,
+  addLove,
+  checkOriginalUsername,
+  createNewUser,
+  getUsers,
+};
