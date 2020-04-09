@@ -175,3 +175,12 @@ test("Can create a new user with form", (t) => {
       });
   });
 });
+
+test("Can only create unique username", (t) => {
+  build().then(() => {
+    const data = {
+      username: "HettieMcC",
+      password: "copyaccount",
+    };
+  });
+});

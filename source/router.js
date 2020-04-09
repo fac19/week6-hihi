@@ -2,9 +2,7 @@ const handlers = require("./handlers");
 
 function router(request, response) {
   const { url, method } = request;
-  console.log(url, method);
   if (url === "/" && method === "GET") {
-    console.log("conditional");
     handlers.homeHandler(request, response);
   } else if (url === "/" && method === "POST") {
     handlers.homeHandler(request, response);

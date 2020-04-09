@@ -97,20 +97,26 @@ function addUser(request, response) {
   request.on("end", () => {
     const searchParams = new URLSearchParams(body);
     const data = Object.fromEntries(searchParams);
-    console.log(data);
-    model
-      .createNewUser(data)
-      .then(() => {
-        response.writeHead(302, { location: "/" });
-        response.end();
-      })
-      .catch((error) => {
-        console.error(error);
+    model.checkOriginalUsername(data).then((original) => {
+      if (original) {
+        model
+          .createNewUser(data)
+          .then(() => {
+            response.writeHead(302, { location: "/" });
+            response.end();
+          })
+          .catch((error) => {
+            console.error(error);
+            response.writeHead(500, { "content-type": "text/html" });
+            response.end(
+              "<h1>Something went wrong with creating your login, please try again</h1>"
+            );
+          });
+      } else {
         response.writeHead(500, { "content-type": "text/html" });
-        response.end(
-          "<h1>Something went wrong with creating your login, please try again</h1>"
-        );
-      });
+        response.end("<h1>Username already in use, please try again</h1>");
+      }
+    });
   });
 }
 
