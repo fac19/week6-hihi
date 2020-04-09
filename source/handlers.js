@@ -137,13 +137,21 @@ function login(request, response) {
   request.on("end", () => {
     const searchParams = new URLSearchParams(body);
     const userInformation = Object.fromEntries(searchParams);
-    //check password is correct.
-    const newCookie = jwt.sign(userInformation.username, secret);
-    response.writeHead(302, {
-      Location: "/",
-      "Set-Cookie": `login=${newCookie}; HttpOnly`,
+    const username = userInformation.username;
+    model.getSpecificUser(username).then((user) => {
+      if (user) {
+        //check password
+        const newCookie = jwt.sign(username, secret);
+        response.writeHead(302, {
+          Location: "/",
+          "Set-Cookie": `login=${newCookie}; HttpOnly`,
+        });
+        return response.end();
+      } else {
+        response.writeHead(500, { "content-type": "text/html" });
+        response.end("<h1> User does not exist. </h1>");
+      }
     });
-    return response.end();
   });
 }
 
