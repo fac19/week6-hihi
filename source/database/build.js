@@ -9,4 +9,6 @@ function build (){
     return db.query(initSQL);
 }
 
+build();
+
 module.exports = build;
