@@ -4,6 +4,7 @@ const model = require("./model");
 const templates = require("./template");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const cookie = require("cookie")
 const secret = "jhjg7o8injgv";
 const types = {
   html: "text/html",
@@ -77,7 +78,7 @@ function addToolHandler(request, response) {
         response.end();
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         response.writeHead(500, { "content-type": "text/html" });
         response.end(`<h1>Something went wrong saving your data</h1>`);
       });
@@ -144,7 +145,7 @@ function loginHandler(request, response) {
     const username = incomingInfo.username;
 
     model.getSpecificUser(username).then((user) => {
-      console.log(user.rows);      
+      // console.log(user.rows);      
       if (user.rowCount) {
         const hashedPassword = user.rows[0].password
          if (bcryptjs.compareSync(incomingInfo.password, hashedPassword)) {
@@ -211,12 +212,26 @@ function logout(request, response) {
 
 function deletePost(request, response, url) {
   // SIMPLE VERSION
-  const deleteId = url.match(/\d$/) || "";
-  //If login user verified
-  model.deletePostFromDatabase(deleteId).then(() => {
+  if (request.headers.cookie) {
+    const token = cookie.parse(request.headers.cookie).login
+    console.log(token);
+    const deleteId = url.match(/\d$/) || "";
+    if (jwt.verify(token, secret)) {
+      model.deletePostFromDatabase(deleteId).then(() => {
+        response.writeHead(302, { location: "/" });
+        response.end();  
+      });
+    } else {
+      response.writeHead(302, { location: "/" });
+      response.end();
+    }
+  } else {
     response.writeHead(302, { location: "/" });
     response.end();
-  });
+  }
+  // console.log(cookies);
+  
+  //If login user verified
 }
 
   // and then we can use that text to delete from the database
