@@ -133,19 +133,26 @@ function loginPage(request, response) {
 
 function login(request, response) {
   let body = "";
-  console.log(body);
   request.on("data", (chunk) => (body += chunk));
   request.on("end", () => {
     const searchParams = new URLSearchParams(body);
     const userInformation = Object.fromEntries(searchParams);
-    console.log(userInformation);
-    const newCookie = jwt.sign(userInformation, secret);
+    //check password is correct.
+    const newCookie = jwt.sign(userInformation.username, secret);
     response.writeHead(302, {
       Location: "/",
       "Set-Cookie": `login=${newCookie}; HttpOnly`,
     });
     return response.end();
   });
+}
+
+function logout(request, response) {
+  response.writeHead(302, {
+    location: "/",
+    "set-cookie": `login=0; Max-Age=0`,
+  });
+  return response.end();
 }
 
 function deletePost(request, response, url) {
@@ -175,5 +182,6 @@ module.exports = {
   addUser,
   loginPage,
   login,
+  logout,
   deletePost,
 };

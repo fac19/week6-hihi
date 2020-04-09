@@ -7,11 +7,13 @@ function htmlSkeleton(redirect, content, username) {
     navBar = `
     <p><a href="/newUserPage">Sign up</a></p>
     <p><a href="/loginPage">Login</a></p>
+    <p><a href="/logout">Log out</a></p>
     `;
   } else {
     navBar = `
     <p>You are loggged in as ${username}</p>
-    <p><a href="#">Log out</a></p>
+    <p><a href = "/loginPage">Login</a></p>
+    <p><a href="/logout">Log out</a></p>
     `;
   }
 

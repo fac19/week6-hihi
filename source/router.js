@@ -21,6 +21,8 @@ function router(request, response) {
     handlers.loginPage(request, response);
   } else if (url == "/loginpage" && method == "POST") {
     handlers.login(request, response);
+  } else if (url == "/logout") {
+    handlers.logout(request, response);
   } else if (url.includes("delete")) {
     handlers.deletePost(request, response, url);
   } else {
