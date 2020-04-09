@@ -17,10 +17,10 @@ function router(request, response) {
     handlers.newUserPage(request, response);
   } else if (url == "/newUserPage" && method == "POST") {
     handlers.addUser(request, response);
-  } else if (url == "/loginPage" && method == "GET") {
+  } else if (url == "/login" && method == "GET") {
     handlers.loginPage(request, response);
-  } else if (url == "/loginPage" && method == "POST") {
-    handlers.login(request, response);
+  } else if (url == "/loginpage" && method == "POST") {
+    handlers.loginHandler(request, response);
   } else if (url.includes("delete")) {
     handlers.deletePost(request, response, url);
   } else {

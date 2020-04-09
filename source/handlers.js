@@ -65,9 +65,9 @@ function addToolHandler(request, response) {
   request.on("end", () => {
     const searchParams = new URLSearchParams(body);
     const data = Object.fromEntries(searchParams);
-    console.log(data);
+    // console.log(data);
     data.love = 0;
-    console.log(data);
+    // console.log(data);
     model
       .createTool(data)
       .then(() => {
@@ -124,14 +124,42 @@ function addUser(request, response) {
   });
 }
 
+
 function loginPage(request, response) {
   response.writeHead(200, { "content-type": "text/html" });
   response.end(templates.login());
 }
 
 function loginHandler(request, response) {
-  // re-route user to homepage
+  body = "";
+  request.on('data', (chunk) => {
+    body += chunk;
+  })
+  request.on('end', () => {
+    const incomingInfo = Object.fromEntries(new URLSearchParams(body))  
+    model.getSpecificUser().then((user) => {
+      console.log(user.rows);      
+      if (user.rowCount) {
+        const hashedPassword = user.rows[0].password
+         if (bcryptjs.compare(hashedPassword, incomingInfo.password)) {
+          response.writeHead(302, {'content-type': 'text/html'})
+          response.end();
+  
+          // create cookie /jwt < Hettie and Ina
+         } else {
+          loginFailed(request, response);
+         }
+      } else {
+        response.writeHead(401, { 'content-type': 'text/html' })
+        response.end('<h1>IBan!</h1>')
+        // send rejection - no user < Hettie and Ina
+      }
+    })
+  })
+
+
 }
+
 
 function loginFailed(request, response) {
   response.writeHead(401, { 'content-type': 'text/html' })
@@ -147,6 +175,7 @@ function deletePost(request, response, url) {
     response.writeHead(302, { location: "/" });
     response.end();
   });
+}
 
   // and then we can use that text to delete from the database
 
@@ -166,6 +195,6 @@ module.exports = {
   addUser,
   loginPage,
   loginHandler,
-  loginFailed
+  loginFailed,
   deletePost,
 };

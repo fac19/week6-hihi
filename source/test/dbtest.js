@@ -186,7 +186,7 @@ test("Can check password from login form matches password in database", (t) => {
       password: "hello123",
     };
     checkPassword(loginInput).then((result) => {
-        console.log("test result:", result);
+        // console.log("test result:", result);
         t.equal(result, true);
         t.end();
       })

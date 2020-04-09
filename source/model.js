@@ -58,22 +58,25 @@ function getAllUsers() {
   return db.query(`SELECT * FROM users`).then((result) => result.rows);
 }
 
-function checkPassword(loginInput) {
-  return db.query(`SELECT password FROM users WHERE username LIKE ($1)`, [loginInput.username])
-    .then((result) => {
-      console.log("result.rows[0]:", result.rows[0]);
-      const userPassword = result.rows[0].password;
-      if (userPassword === loginInput.password) {
-        // then log user in
-        // loginHandler();
-        return true;
-      } else {
-        // return login error message to user
-        // loginFailed();
-        return false;
-      }
-    })
-};
+function getSpecificUser(username) {
+  return db.query(`SELECT * FROM users WHERE username = $1`, [username])  
+}
+
+// function checkPassword(loginInput) {
+//   return db.query(`SELECT password FROM users WHERE username LIKE ($1)`, [loginInput.username])
+//     .then((result) => {
+//       const userPassword = result.rows[0].password;
+//       if (userPassword === loginInput.password) {
+//         // then log user in
+//         // loginHandler();
+//         return true;
+//       } else {
+//         // return login error message to user
+//         // loginFailed();
+//         return false;
+//       }
+//     })
+// };
 
 function createJWT() {
 
@@ -91,6 +94,7 @@ module.exports = {
   createNewUser,
   getAllUsers,
   deletePostFromDatabase,
-  checkPassword, 
-  createJWT 
+  // checkPassword, 
+  createJWT,
+  getSpecificUser, 
 };
