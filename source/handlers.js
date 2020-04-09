@@ -4,8 +4,12 @@ const model = require("./model");
 const templates = require("./template");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const cookie = require("cookie")
-const secret = "jhjg7o8injgv";
+const cookie = require("cookie");
+const dotenv = require("dotenv")
+dotenv.config();
+
+const secret = process.env.SECRET;
+
 const types = {
   html: "text/html",
   css: "text/css",
