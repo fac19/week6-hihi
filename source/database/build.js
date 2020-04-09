@@ -1,4 +1,4 @@
-const fs = require("fs");
+pmconst fs = require("fs");
 const path = require("path");
 const db = require("./connection");
 
@@ -8,5 +8,7 @@ const initSQL = fs.readFileSync(initPath, "utf-8");
 function build() {
   return db.query(initSQL);
 }
+
+// build();
 
 module.exports = build;

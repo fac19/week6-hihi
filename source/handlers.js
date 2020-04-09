@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const model = require("./model");
 const templates = require("./template");
+const bcryptjs = require("bcryptjs");
 const types = {
   html: "text/html",
   css: "text/css",
@@ -64,6 +65,7 @@ function addToolHandler(request, response) {
   request.on("end", () => {
     const searchParams = new URLSearchParams(body);
     const data = Object.fromEntries(searchParams);
+    console.log(data);
     data.love = 0;
     console.log(data);
     model
@@ -99,6 +101,8 @@ function addUser(request, response) {
     const data = Object.fromEntries(searchParams);
     model.checkOriginalUsername(data).then((original) => {
       if (original) {
+        const salt = bcryptjs.genSaltSync(10);
+        data.password = bcryptjs.hashSync(data.password, salt);
         model
           .createNewUser(data)
           .then(() => {

@@ -38,8 +38,8 @@ BEGIN;
   CREATE TABLE users
   (
     id SERIAL PRIMARY KEY,
-    username VARCHAR(20),
-    password VARCHAR(20)
+    username VARCHAR(2000),
+    password VARCHAR(2000)
   );
 
   INSERT INTO users
