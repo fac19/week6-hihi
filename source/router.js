@@ -2,6 +2,7 @@ const handlers = require("./handlers");
 
 function router(request, response) {
   const { url, method } = request;
+  // console.log(url);
   if (url === "/" && method === "GET") {
     handlers.homeHandler(request, response);
   } else if (url === "/" && method === "POST") {
@@ -20,6 +21,8 @@ function router(request, response) {
     handlers.loginPage(request, response);
   } else if (url == "/loginPage" && method == "POST") {
     handlers.login(request, response);
+  } else if (url.includes("delete")) {
+    handlers.deletePost(request, response, url);
   } else {
     handlers.missingHandler(request, response);
   }

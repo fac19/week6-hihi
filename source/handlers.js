@@ -131,6 +131,22 @@ function loginPage(request, response) {
 
 function login(request, response) {}
 
+function deletePost(request, response, url) {
+  // SIMPLE VERSION
+  const deleteId = url.match(/\d$/) || "";
+  //If login user verified
+  model.deletePostFromDatabase(deleteId).then(() => {
+    response.writeHead(302, { location: "/" });
+    response.end();
+  });
+
+  // and then we can use that text to delete from the database
+
+  // COMPLICATION
+  // the user should only be able to delete their own posts
+  // after working out what post to delete, we should check the jwt to see if the author_id of the post matches the author_id in the verified jwt.
+}
+
 module.exports = {
   homeHandler,
   publicHandler,
@@ -142,4 +158,5 @@ module.exports = {
   addUser,
   loginPage,
   login,
+  deletePost,
 };
