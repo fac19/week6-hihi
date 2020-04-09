@@ -23,6 +23,7 @@ $ psql -c "CREATE DATABASE hihi_test_db WITH OWNER myuser"
 PGDATABASE=srvvrs_db
 PGUSER=myuser
 PGPASSWORD=mypassword
+SECRET=your_secret
 ```
 6. Comment out the following line on your `connection.js` file which connects to the Heroku database
 
