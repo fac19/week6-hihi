@@ -116,7 +116,7 @@ function home(tools) {
         <label for="username">Username</label>
         <input id="username" type="text" name="username">
         <label for="password">Password</label>
-        <input id="password" type="password" name="password">  
+        <input id="password" type="password" name="password">
         <input type="submit" value="Log in">
         </form>
         `
@@ -138,22 +138,6 @@ function home(tools) {
           `
           )
         }
-
-        function login() {
-          return htmlSkeleton(
-            `<a class="new-page-link" href='/'>Go back home</a>`,
-  
-            `
-            <form method="post" action="./loginpage" enctype="application/x-www-form-urlencoded">
-            <label for="username">Username</label>
-            <input id="username" type="text" name="username">
-            <label for="password">Password</label>
-            <input id="password" type="password" name="password">  
-            <input type="submit" value="Log in">
-            </form>
-            `
-            )
-          }
   
         
         function missing() {

@@ -43,16 +43,31 @@ function createNewUser(data) {
   );
 }
 
-function getUsers() {
+function getAllUsers() {
   return db.query(`SELECT * FROM users`).then((result) => result.rows);
 }
 
-function checkPassword() {
-  // return db.query(`SELECT username FROM users`).then((result) => result.)
+function checkPassword(loginInput) {
+  // const values = [loginInput.username, loginInput.password]
+  return db.query(`SELECT password FROM users WHERE username LIKE ($1)`, [loginInput.username])
+    .then((result) => {
+      console.log("result.rows is" + result.rows);
+      const userPassword = result.rows.password;
+      if (userPassword === loginInput.password) {
+        // then log user in
+        // loginHandler();
+        return true;
+      } else {
+        // return login error message to user
+        // loginFailed();
+        console.log(loginInput.password, userPassword);
+        return false;
+      }
+    })
 };
 
 function createJWT() {
 
 };
 
-module.exports = { getTools, createTool, addLove, createNewUser, getUsers, checkPassword, createJWT };
+module.exports = { getTools, createTool, addLove, createNewUser, getAllUsers, checkPassword, createJWT };

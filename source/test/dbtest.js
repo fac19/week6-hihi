@@ -6,9 +6,9 @@ const {
   createTool,
   addLove,
   createNewUser,
-  getUsers,
-  // checkPassword, 
-  // createJWT 
+  getAllUsers,
+  checkPassword, 
+  createJWT 
 } = require("../model");
 
 // test getTools()
@@ -166,7 +166,7 @@ test("Can create a new user with form", (t) => {
     };
     createNewUser(data)
       .then(() =>
-        getUsers().then((users) => {
+        getAllUsers().then((users) => {
           const latestUser = users[users.length - 1];
           t.equal(latestUser.username, "IvoLovesPancakes"), t.end();
         })
@@ -178,22 +178,23 @@ test("Can create a new user with form", (t) => {
   });
 });
 
-// test("Can check password from login form matches password in database", (t) => {
-//   build().then(() => {
-//     const loginInput = {
-//       username: "HettieMcC",
-//       password: "hello123",
-//     };
-//     checkPassword(loginInput.password)
-//     .then(() => {
-//       getUsers().then(() => {
-//         t.equal(true);
-//         t.end();
-//       })
-//     })
-//     .catch((error) => {
-//       t.error(error);
-//       t.end();
-//     })
-//   })
-// })
+test("Can check password from login form matches password in database", (t) => {
+  build().then(() => {
+    const loginInput = {
+      username: "HettieMcC",
+      password: "hello123",
+    };
+    checkPassword(loginInput).then((result) => {
+        console.log(result);
+        t.equal(result, true);
+        t.end();
+      })
+      .catch((error) => {
+        t.error(error);
+        t.end();
+    })})
+  .catch((error) => {
+    t.error(error);
+    t.end();
+  })
+});

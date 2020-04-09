@@ -101,8 +101,13 @@ function loginPage(request, response) {
   response.end(templates.login())
 }
 
-function login(request, response) {
-  
+function loginHandler(request, response) {
+  // re-route user to homepage
+}
+
+function loginFailed(request, response) {
+  response.writeHead(401, { 'content-type': 'text/html' })
+  response.end('<h1>Incorrect password!</h1>')
 }
 
 module.exports = {
@@ -115,5 +120,6 @@ module.exports = {
   newUserPage,
   addUser,
   loginPage,
-  login
+  loginHandler,
+  loginFailed
 };
