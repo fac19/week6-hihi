@@ -72,11 +72,11 @@ function home(tools) {
     `
     <p class="home-filter-description">Select a category to filter the results:</p>
     <div id="categoryIcon" class="cat">
-    <a class="cat__work-icon"><i class="fas fa-briefcase"></i></a>
-    <a class="cat__social-icon"><i class="fas fa-people-arrows"></i></a>
-    <a class="cat__ent-icon"><i class="fas fa-photo-video"></i></a>
-    <a class="cat__health-icon"><i class="fas fa-heartbeat"></i></a>
-    <a class="cat__news-icon"><i class="far fa-newspaper"></i></a>
+    <a class="cat__work-icon">work</i></a>
+    <a class="cat__social-icon">work</i></a>
+    <a class="cat__ent-icon">photo & video</i></a>
+    <a class="cat__health-icon">health</i></a>
+    <a class="cat__news-icon">news</i></a>
     </div>
     ${printTools(tools)}`
   );
