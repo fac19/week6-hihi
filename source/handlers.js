@@ -143,35 +143,35 @@ function loginHandler(request, response) {
   request.on('data', (chunk) => {
     body += chunk;
   })
-
-
   request.on('end', () => {
     const incomingInfo = Object.fromEntries(new URLSearchParams(body))  
     const username = incomingInfo.username;
-
+  
     model.getSpecificUser(username).then((user) => {
       // console.log(user.rows);      
       if (user.rowCount) {
         const hashedPassword = user.rows[0].password
-         if (bcryptjs.compareSync(incomingInfo.password, hashedPassword)) {
-          const newCookie = jwt.sign(username, secret);
-          response.writeHead(302, {
-            'Location': "/",
-            "Set-Cookie": `login=${newCookie}; HttpOnly`,
+        return bcryptjs.compare(incomingInfo.password, hashedPassword).then((match) => {
+          if (!match) {
+            throw new Error(error);
+          } else {
+            const newCookie = jwt.sign(username, secret);
+            response.writeHead(302, {
+              'Location': "/",
+              "Set-Cookie": `login=${newCookie}; HttpOnly`,}
+          )}
+            return response.end();
           })
-          return response.end();
-       
-          // create cookie /jwt < Hettie and Ina
-         } else {
-          loginFailed(request, response);
-         }
-      } else {
-        loginFailed(request, response);
-      }
+          .catch(error => {
+            loginFailed();
+          })
+        .catch(error => {
+          loginFailed();
+    })
+  }
     })
   })
-}
-
+};
 
 function loginFailed(request, response) {
   response.writeHead(401, { 'content-type': 'text/html' })
