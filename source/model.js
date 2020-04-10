@@ -8,7 +8,7 @@ const db = require("./database/connection");
 // THE BELOW DOES PROTECT AGAINST SQL INJECTION (HOPEFULLY)
 function getTools(filter) {
   return db
-    .query("SELECT * FROM user_input WHERE category LIKE ($1)", [`${filter}`])
+    .query("SELECT * FROM user_input WHERE category LIKE ($1)", [filter])
     .then((result) => result.rows);
 }
 
