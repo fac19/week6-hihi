@@ -72,11 +72,11 @@ function home(tools) {
     `
     <p class="home-filter-description">Select a category to filter the results:</p>
     <div id="categoryIcon" class="cat">
-    <a class="cat__work-icon">work</a>
-    <a class="cat__social-icon">work</a>
-    <a class="cat__ent-icon">photo & video</a>
-    <a class="cat__health-icon">health</a>
-    <a class="cat__news-icon">news</a>
+    <a class="cat__work-icon">Work</a>
+    <a class="cat__social-icon">Social</a>
+    <a class="cat__ent-icon">Entertainment</a>
+    <a class="cat__health-icon">Health</a>
+    <a class="cat__news-icon">News</a>
     </div>
     ${printTools(tools)}`
   );
@@ -90,19 +90,19 @@ function addPage() {
     `<form action="create-tool" method="POST">
       <fieldset>
       <legend>Category:</legend>
-      <label class="radio-label" for="work"><i class="fas fa-briefcase"></i>
+      <label class="radio-label" for="work">Work
       <input type="radio" id="work" name="category" value="Work" required>
       </label>
-      <label class="radio-label" for="social"><i class="fas fa-people-arrows"></i>
+      <label class="radio-label" for="social">Social
       <input type="radio" id="social" name="category" value="Social" required>
       </label>
-      <label class="radio-label" for="entertainment"><i class="fas fa-photo-video"></i>
+      <label class="radio-label" for="entertainment">Entertainment
       <input type="radio" id="entertainment" name="category" value="Entertainment" required>
       </label>
-      <label class="radio-label" for="health"><i class="fas fa-heartbeat"></i>
+      <label class="radio-label" for="health">Health
       <input type="radio" id="health" name="category" value="Health" required>
       </label>
-      <label class="radio-label" for="news"><i class="far fa-newspaper"></i>
+      <label class="radio-label" for="news">News
       <input type="radio" id="news" name="category" value="News" required>
       </label>
       </fieldset>
