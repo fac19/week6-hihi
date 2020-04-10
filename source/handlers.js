@@ -165,8 +165,6 @@ function loginHandler(request, response) {
             "Set-Cookie": `login=${newCookie}; HttpOnly`,
           });
           return response.end();
-
-          // create cookie /jwt < Hettie and Ina
         } else {
           loginFailed(request, response);
         }
@@ -192,6 +190,7 @@ function logout(request, response) {
 }
 
 function deletePost(request, response, url) {
+  usernameFromCookie(request);
   if (checkAuth(request)) {
     model.deletePostFromDatabase(deleteId).then(() => {
       response.writeHead(302, { location: "/" });
@@ -211,6 +210,15 @@ function deletePost(request, response, url) {
 // the user should only be able to delete their own posts
 // after working out what post to delete, we should check the jwt to see if the author_id of the post matches the author_id in the verified jwt.
 
+//get username from cookie - not functioning correctly atm.
+// function usernameFromCookie(req) {
+//   console.log("something");
+//   if (req.headers.cookie) {
+//     const token = cookie.parse(req.headers.cookie);
+//     console.log(token);
+//   }
+// }
+
 function checkAuth(req) {
   // checks whether they have general user privileges
   if (req.headers.cookie) {
@@ -221,11 +229,6 @@ function checkAuth(req) {
     }
   }
   return false;
-}
-
-function checkOwnership(req) {
-  const auth = checkAuth(req);
-  // does the pos they're trying to delete match up to the username in JWT
 }
 
 module.exports = {
@@ -243,5 +246,4 @@ module.exports = {
   logout,
   deletePost,
   checkAuth,
-  checkOwnership,
 };
