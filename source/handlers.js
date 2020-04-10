@@ -121,8 +121,9 @@ function addUser(request, response) {
         model
           .createNewUser(data)
           .then(() => {
-            response.writeHead(302, { location: "/" });
-            response.end();
+            response.writeHead(302, { "content-type": "text/html" });
+            response.end(`<h1>You have been successfully signed up</h1>
+            <a href='/'><h2 class='error-subtitle'>Go to homepage</h2></a>`);
           })
           .catch((error) => {
             console.error(error);
@@ -169,16 +170,15 @@ function loginHandler(request, response) {
           loginFailed(request, response);
         }
       } else {
-        response.writeHead(401, { "content-type": "text/html" });
-        response.end("<h1> User does not exist. </h1>");
+        loginFailed(request, response);
       }
     });
   });
 }
 
 function loginFailed(request, response) {
-  response.writeHead(401, { "content-type": "text/html" });
-  response.end("<h1>Incorrect password!</h1>");
+  response.writeHead(401, { 'content-type': 'text/html' })
+  response.end('<h1>Username or password is incorrect!</h1>')
 }
 
 function logout(request, response) {

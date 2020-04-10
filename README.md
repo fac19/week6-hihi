@@ -8,7 +8,7 @@ We have worked on the SRVVRS app from last week, adding authentication functiona
 - [Hannah](https://github.com/hannahgooding)
 - [Ina](https://github.com/itsina96)
 - [Ivo](https://github.com/Ivo-Evans)
-- [Hattie](https://github.com/HettieM)
+- [Hettie](https://github.com/HettieM)
 
 ## Set up instructions
 1. Clone this repo
