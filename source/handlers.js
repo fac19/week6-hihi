@@ -5,7 +5,7 @@ const templates = require("./template");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cookie = require("cookie");
-const dotenv = require("dotenv")
+const dotenv = require("dotenv");
 dotenv.config();
 
 const secret = process.env.SECRET;
@@ -75,17 +75,25 @@ function addToolHandler(request, response) {
     // console.log(data);
     data.love = 0;
     // console.log(data);
-    model
-      .createTool(data)
-      .then(() => {
-        response.writeHead(302, { location: "/" });
-        response.end();
-      })
-      .catch((error) => {
-        // console.log(error);
-        response.writeHead(500, { "content-type": "text/html" });
-        response.end(`<h1>Something went wrong saving your data</h1>`);
-      });
+
+    if (checkAuth(request)) {
+      model
+        .createTool(data)
+        .then(() => {
+          response.writeHead(302, { location: "/" });
+          response.end();
+        })
+        .catch((error) => {
+          // console.log(error);
+          response.writeHead(500, { "content-type": "text/html" });
+          response.end(`<h1>Something went wrong saving your data</h1>`);
+        });
+    } else {
+      response.writeHead(401, { "content-type": "text/html" });
+      response.end(
+        "<h1> You are not logged in. Please login <a href='/loginPage'>here</a>"
+      );
+    }
   });
 }
 
@@ -131,7 +139,6 @@ function addUser(request, response) {
   });
 }
 
-
 function loginPage(request, response) {
   response.writeHead(200, { "content-type": "text/html" });
   response.end(templates.login());
@@ -139,72 +146,42 @@ function loginPage(request, response) {
 
 function loginHandler(request, response) {
   body = "";
-  request.on('data', (chunk) => {
+  request.on("data", (chunk) => {
     body += chunk;
-  })
+  });
 
-
-  request.on('end', () => {
-    const incomingInfo = Object.fromEntries(new URLSearchParams(body))  
+  request.on("end", () => {
+    const incomingInfo = Object.fromEntries(new URLSearchParams(body));
     const username = incomingInfo.username;
 
     model.getSpecificUser(username).then((user) => {
-      // console.log(user.rows);      
+      // console.log(user.rows);
       if (user.rowCount) {
-        const hashedPassword = user.rows[0].password
-         if (bcryptjs.compareSync(incomingInfo.password, hashedPassword)) {
+        const hashedPassword = user.rows[0].password;
+        if (bcryptjs.compareSync(incomingInfo.password, hashedPassword)) {
           const newCookie = jwt.sign(username, secret);
           response.writeHead(302, {
-            'Location': "/",
+            Location: "/",
             "Set-Cookie": `login=${newCookie}; HttpOnly`,
-          })
+          });
           return response.end();
-       
+
           // create cookie /jwt < Hettie and Ina
-         } else {
+        } else {
           loginFailed(request, response);
-         }
+        }
       } else {
         response.writeHead(401, { "content-type": "text/html" });
         response.end("<h1> User does not exist. </h1>");
       }
-    })
-  })
+    });
+  });
 }
-
 
 function loginFailed(request, response) {
-  response.writeHead(401, { 'content-type': 'text/html' })
-  response.end('<h1>Incorrect password!</h1>')
+  response.writeHead(401, { "content-type": "text/html" });
+  response.end("<h1>Incorrect password!</h1>");
 }
-
-// function login(request, response) {
-//   let body = "";
-//   request.on("data", (chunk) => (body += chunk));
-
-
-//   request.on("end", () => {
-//     const searchParams = new URLSearchParams(body);
-//     const userInformation = Object.fromEntries(searchParams);
-
-//     const username = userInformation.username;
-//     model.getSpecificUser(username).then((user) => {
-//       if (user) {
-//         //check password
-
-//         const newCookie = jwt.sign(username, secret);
-//         response.writeHead(302, {
-//           Location: "/",
-//           "Set-Cookie": `login=${newCookie}; HttpOnly`,
-//         });
-//         return response.end();
-//       } else {
-//         response.writeHead(500, { "content-type": "text/html" });
-//         response.end("<h1> User does not exist. </h1>");
-//       }
-//     });
-//   });
-// }
 
 function logout(request, response) {
   response.writeHead(302, {
@@ -215,35 +192,41 @@ function logout(request, response) {
 }
 
 function deletePost(request, response, url) {
-  // SIMPLE VERSION
-  if (request.headers.cookie) {
-    const token = cookie.parse(request.headers.cookie).login
-    console.log(token);
-    const deleteId = url.match(/\d$/) || "";
-    if (jwt.verify(token, secret)) {
-      model.deletePostFromDatabase(deleteId).then(() => {
-        response.writeHead(302, { location: "/" });
-        response.end();  
-      });
-    } else {
+  if (checkAuth(request)) {
+    model.deletePostFromDatabase(deleteId).then(() => {
       response.writeHead(302, { location: "/" });
       response.end();
-    }
+    });
   } else {
-    response.writeHead(302, { location: "/" });
-    response.end();
+    response.writeHead(401, { "content-type": "text/html" });
+    response.end(
+      "<h1> You are not logged in. Please login <a href='/loginPage'>here</a>"
+    );
   }
-  // console.log(cookies);
-  
-  //If login user verified
 }
 
-  // and then we can use that text to delete from the database
+// and then we can use that text to delete from the database
 
-  // COMPLICATION
-  // the user should only be able to delete their own posts
-  // after working out what post to delete, we should check the jwt to see if the author_id of the post matches the author_id in the verified jwt.
+// COMPLICATION
+// the user should only be able to delete their own posts
+// after working out what post to delete, we should check the jwt to see if the author_id of the post matches the author_id in the verified jwt.
 
+function checkAuth(req) {
+  // checks whether they have general user privileges
+  if (req.headers.cookie) {
+    const token = cookie.parse(request.headers.cookie).login;
+    const secret = process.env.SECRET;
+    if (jwt.verify(token, secret)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function checkOwnership(req) {
+  const auth = checkAuth(req);
+  // does the pos they're trying to delete match up to the username in JWT
+}
 
 module.exports = {
   homeHandler,
@@ -259,4 +242,6 @@ module.exports = {
   loginFailed,
   logout,
   deletePost,
+  checkAuth,
+  checkOwnership,
 };
