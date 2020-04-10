@@ -113,8 +113,9 @@ function addUser(request, response) {
         model
           .createNewUser(data)
           .then(() => {
-            response.writeHead(302, { location: "/" });
-            response.end();
+            response.writeHead(302, { "content-type": "text/html" });
+            response.end(`<h1>You have been successfully signed up</h1>
+            <a href='/'><h2 class='error-subtitle'>Go to homepage</h2></a>`);
           })
           .catch((error) => {
             console.error(error);
