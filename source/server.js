@@ -1,6 +1,6 @@
 const http = require("http");
 const router = require("./router");
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 const server = http.createServer(router);
 

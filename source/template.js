@@ -119,9 +119,7 @@ function addPage() {
       <input class="user-info" id="tool_link" name="tool_link" placeholder="google.com" required>
       </label>
       
-      <label class='user-info-label' for="added_by">Username
-      <input class="user-info" id="added_by" name="added_by" required>
-      </label>
+  
       
       <button class="post-tool-button" type="submit">Post tool</button>
       </form>`
