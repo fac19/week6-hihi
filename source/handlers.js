@@ -67,12 +67,14 @@ function addPageHandler(request, response) {
 }
 
 function addToolHandler(request, response) {
+  let username = usernameFromCookie(request);
   let body = "";
   request.on("data", (chunk) => (body += chunk));
   request.on("end", () => {
     const searchParams = new URLSearchParams(body);
     const data = Object.fromEntries(searchParams);
     // console.log(data);
+    data.added_by = username;
     data.love = 0;
     // console.log(data);
 
@@ -190,8 +192,10 @@ function logout(request, response) {
 }
 
 function deletePost(request, response, url) {
-  usernameFromCookie(request);
+  const deleteId = url.match(/\d$/) || "";
+  console.log(usernameFromCookie(request));
   if (checkAuth(request)) {
+    // get username in db of post to be deleted, if match, then do this. But first, make sure that adding a post uses username from cookie...
     model.deletePostFromDatabase(deleteId).then(() => {
       response.writeHead(302, { location: "/" });
       response.end();
@@ -211,18 +215,17 @@ function deletePost(request, response, url) {
 // after working out what post to delete, we should check the jwt to see if the author_id of the post matches the author_id in the verified jwt.
 
 function usernameFromCookie(req) {
-  console.log("something");
-  console.log(req.headers.cookie)
   if (req.headers.cookie) {
-    const token = cookie.parse(req.headers.cookie);
-    console.log(token);
+    const token = cookie.parse(req.headers.cookie).login;
+    const buffer = Buffer.from(token.split('.')[1], 'base64')
+    return buffer.toString('ascii');
   }
 }
 
 function checkAuth(req) {
   // checks whether they have general user privileges
   if (req.headers.cookie) {
-    const token = cookie.parse(request.headers.cookie).login;
+    const token = cookie.parse(req.headers.cookie).login;
     const secret = process.env.SECRET;
     if (jwt.verify(token, secret)) {
       return true;

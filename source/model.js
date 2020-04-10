@@ -54,7 +54,9 @@ function createNewUser(data) {
   );
 }
 
-
+function getPostAuthor(post_id) {
+  return db.query(`SELECT added_by FROM user_input WHERE id = $1`, [post_id])
+}
 
 function getSpecificUser(username) {
   return db
@@ -105,5 +107,6 @@ module.exports = {
   deletePostFromDatabase,
   // checkPassword, 
   createJWT,
-  getSpecificUser, 
+  getSpecificUser,
+  getPostAuthor, 
 };
