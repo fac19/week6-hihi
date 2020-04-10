@@ -212,6 +212,7 @@ function deletePost(request, response, url) {
 
 function usernameFromCookie(req) {
   console.log("something");
+  console.log(req.headers.cookie)
   if (req.headers.cookie) {
     const token = cookie.parse(req.headers.cookie);
     console.log(token);

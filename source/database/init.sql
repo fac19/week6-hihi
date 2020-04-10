@@ -1,8 +1,8 @@
 BEGIN;
 
   -- Comment when in deployed
-  DROP TABLE IF EXISTS user_input;
-  DROP TABLE IF EXISTS users;
+  DROP TABLE IF EXISTS user_input CASCADE;
+  DROP TABLE IF EXISTS users CASCADE;
 
   CREATE TABLE user_input
   (
