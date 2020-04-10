@@ -165,8 +165,7 @@ function loginHandler(request, response) {
           loginFailed(request, response);
          }
       } else {
-        response.writeHead(401, { "content-type": "text/html" });
-        response.end("<h1> User does not exist. </h1>");
+        loginFailed(request, response);
       }
     })
   })
@@ -175,7 +174,7 @@ function loginHandler(request, response) {
 
 function loginFailed(request, response) {
   response.writeHead(401, { 'content-type': 'text/html' })
-  response.end('<h1>Incorrect password!</h1>')
+  response.end('<h1>Username or password is incorrect!</h1>')
 }
 
 // function login(request, response) {
